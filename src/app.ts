@@ -1,13 +1,14 @@
 import express from 'express';
 import seriesRouter from './routes/series';
 import dotenv from 'dotenv';
+var cors = require('cors');
 
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = 8080;
 
-app.use(express.json());
+app.use(cors());
 
 app.use('/series', seriesRouter);
 
