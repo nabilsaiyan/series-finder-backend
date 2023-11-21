@@ -20,7 +20,6 @@ seriesRouter.get(
     }
 
     const url = `${TMDB_API_BASE_URL}/search/tv`;
-
     const query = req.query.keyword;
 
     if (!query) {
@@ -47,5 +46,27 @@ seriesRouter.get(
     }
   },
 );
+
+seriesRouter.get('/trending', async (req: Request, res: Response) => {
+  const url = `${TMDB_API_BASE_URL}/trending/tv/week?language=en-US`;
+
+  try {
+    const tmdbResponse = await axios.get(url, {
+      params: {
+        page: 1,
+      },
+      headers: {
+        Authorization: `Bearer ${TMDB_API_KEY}`,
+      },
+    });
+
+    const matchingSeries = tmdbResponse.data.results;
+
+    res.json(matchingSeries);
+  } catch (error) {
+    console.error('TMDB API Error:', error);
+    res.status(500).json({ error: 'Failed to fetch data from TMDB API.' });
+  }
+});
 
 export default seriesRouter;
